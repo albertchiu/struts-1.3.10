@@ -485,13 +485,13 @@ public class RequestUtils {
     }
 
     /**
-     * <p>If the given form bean can accept multiple FormFile objects but the user only uploaded a single, then 
+     * <p>If the given form bean can accept multiple FormFile objects but the user only uploaded a single, then
      * the property will not match the form bean type.  This method performs some simple checks to try to accommodate
      * that situation.</p>
      * @param bean
      * @param name
      * @param parameterValue
-     * @return 
+     * @return
      * @throws ServletException if the introspection has any errors.
      */
     private static Object rationalizeMultipleFileProperty(Object bean, String name, Object parameterValue) throws ServletException {
@@ -502,6 +502,10 @@ public class RequestUtils {
         FormFile formFileValue = (FormFile) parameterValue;
         try {
             Class propertyType = PropertyUtils.getPropertyType(bean, name);
+
+            if (propertyType == null) {
+                return parameterValue;
+            }
 
             if (List.class.isAssignableFrom(propertyType)) {
                 ArrayList list = new ArrayList(1);
